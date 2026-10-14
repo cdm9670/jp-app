@@ -277,7 +277,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
     <button class="btn" id="lpNext">다음</button>
   </div>
   <div class="row" style="margin-top:10px"><button class="btn bad" id="lpStop" style="flex:1">끝내기</button></div>
-  <p class="muted" style="margin-top:14px">화면을 끄거나 폴더를 닫아도 계속 재생되도록 '배경 재생 유지'를 켜 두었습니다. 잠금화면의 재생 버튼으로 일시정지·다음도 됩니다. (휴대폰·Chrome 버전에 따라 멈출 수 있어요)</p>
+  <p class="muted" style="margin-top:14px">재생 중에는 화면이 꺼지지 않게 해 둡니다. 화면을 꺼도 계속 듣고 싶으면 설정의 '배경 재생 유지(실험)'를 켜 보세요.</p>
 </section>
 
 <!-- SETTINGS -->
@@ -286,12 +286,13 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
     <div class="setrow"><label>말하기 속도<small>초급은 0.8배부터 권장</small></label>
       <select id="setRate"><option value="0.6">0.6배</option><option value="0.7">0.7배</option><option value="0.8">0.8배</option><option value="0.9">0.9배</option><option value="1">1.0배 (원속도)</option></select></div>
     <div class="setrow"><label>일본어 목소리</label><select id="setVoice"></select></div>
-    <div class="setrow"><label>소리 테스트</label><button class="btn" id="testVoice" style="min-height:40px">こんにちは 재생</button></div>
+    <div class="setrow"><label>소리 테스트</label><span class="row" style="gap:6px"><button class="btn" id="testVoice" style="min-height:40px">일본어</button><button class="btn" id="testKo" style="min-height:40px">한국어</button></span></div>
+    <div class="setrow" style="display:block"><label>음성 진단<small>소리가 안 나면 이 내용을 알려 주세요</small></label><pre id="diag" style="white-space:pre-wrap;font-size:12px;background:var(--surface2);border-radius:10px;padding:10px;margin:8px 0 0">-</pre></div>
     <div class="setrow"><label>후리가나 표시<small>한자 위 작은 히라가나</small></label><span class="sw"><input type="checkbox" id="setFuri"><span></span></span></div>
     <div class="setrow"><label>한국어 발음 표시<small>참고용 · 실제 소리와 다를 수 있음</small></label><span class="sw"><input type="checkbox" id="setPron"><span></span></span></div>
     <div class="setrow"><label>카드 앞면에서 바로 소리<small>단어카드가 나올 때 자동 재생</small></label><span class="sw"><input type="checkbox" id="setAuto"><span></span></span></div>
     <div class="setrow"><label>뜻 → 일본어 방향<small>켜면 한국어를 보고 일본어를 떠올려요</small></label><span class="sw"><input type="checkbox" id="setRev"><span></span></span></div>
-    <div class="setrow"><label>배경 재생 유지 (실험)<small>자동 재생 중 화면이 꺼져도 계속 재생 시도 · 아주 작은 잡음을 함께 재생</small></label><span class="sw"><input type="checkbox" id="setBg"><span></span></span></div>
+    <div class="setrow"><label>배경 재생 유지 (실험)<small>기본은 꺼짐 · 켜면 자동 재생 중 화면이 꺼져도 계속 재생을 시도 (소리가 안 나면 끄세요)</small></label><span class="sw"><input type="checkbox" id="setBg"><span></span></span></div>
     <div class="setrow"><label>하루 새 카드 수</label><select id="setNew"><option>5</option><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
     <div class="setrow"><label>화면 테마</label><select id="setTheme"><option value="">휴대폰 설정 따름</option><option value="light">밝게</option><option value="dark">어둡게</option></select></div>
   </div>
@@ -306,7 +307,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <div class="card">
     <div class="setrow"><label>기록 초기화<small>모든 진도가 지워집니다</small></label><button class="btn bad" id="resetAll" style="min-height:40px">초기화</button></div>
   </div>
-  <p class="foot">버전 v2_20261015_0836 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
+  <p class="foot">버전 v3_20261015_0856 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
 </section>
 </main>
 
@@ -329,7 +330,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem('jpk_'+k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem('jpk_'+k, JSON.stringify(v)); }catch(e){} }
 };
-let S = Object.assign({rate:0.8, voice:'', furi:true, pron:true, auto:true, rev:false, newPer:10, theme:'', bg:true, waEx:true, waShuf:false, waRep:false}, store.get('set', {}));
+let S = Object.assign({rate:0.8, voice:'', furi:true, pron:true, auto:true, rev:false, newPer:10, theme:'', bgx:false, waEx:true, waShuf:false, waRep:false}, store.get('set', {}));
 let SRS = store.get('srs', {});      // id -> {b:box, d:due(ms)}
 let LOG = store.get('log', {});      // 'YYYY-MM-DD' -> count
 let START = store.get('start', null);
@@ -436,17 +437,23 @@ function loadVoices(){
   }catch(e){ $('#voiceWarn').classList.remove('hide'); }
 }
 if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; setTimeout(loadVoices, 800); }
+let LAST_TTS = '';
+function pickVoice(langRe){ try{ return speechSynthesis.getVoices().filter(v => langRe.test(v.lang)); }catch(e){ return []; } }
 function speak(text, opt={}){
   return new Promise(res => {
-    if(!('speechSynthesis' in window)){ res(); return; }
+    if(!('speechSynthesis' in window)){ LAST_TTS = '이 브라우저는 음성 기능이 없음'; res(); return; }
+    const syn = window.speechSynthesis;
     const u = new SpeechSynthesisUtterance(text);
-    if(opt.ko){ u.lang = 'ko-KR'; const kv = speechSynthesis.getVoices().find(v=>/^ko/i.test(v.lang)); if(kv) u.voice = kv; u.rate = 1; }
-    else { u.lang = 'ja-JP'; const v = VOICES.find(v=>v.voiceURI===S.voice) || VOICES[0]; if(v) u.voice = v; u.rate = (opt.rate || S.rate); }
-    let done = false; const fin = () => { if(!done){ done = true; res(); } };
-    u.onend = fin; u.onerror = fin;
-    setTimeout(fin, 2500 + text.length * 450 / (u.rate||1));
-    if(!opt.queue) speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+    if(opt.ko){ u.lang = 'ko-KR'; const kv = pickVoice(/^ko/i); if(kv.length) u.voice = kv.find(v=>v.localService) || kv[0]; u.rate = 1; }
+    else { u.lang = 'ja-JP'; const jv = pickVoice(/^ja/i); const v = jv.find(v=>v.voiceURI===S.voice) || jv.find(v=>v.localService) || jv[0]; if(v) u.voice = v; u.rate = (opt.rate || S.rate); }
+    u.volume = 1; u.pitch = 1;
+    let done = false, started = false; const fin = () => { if(!done){ done = true; clearTimeout(t); res(); } };
+    u.onstart = () => { started = true; LAST_TTS = '재생됨: ' + (u.voice ? u.voice.name : u.lang); };
+    u.onend = fin;
+    u.onerror = e => { LAST_TTS = '오류: ' + (e.error || 'unknown') + ' (' + u.lang + ')'; fin(); };
+    const t = setTimeout(() => { if(!started) LAST_TTS = '시작 안 됨 (' + u.lang + ')'; fin(); }, 3000 + text.length * 500 / (u.rate||1));
+    const go = () => { try{ syn.resume(); }catch(e){} syn.speak(u); };
+    if(!opt.queue && (syn.speaking || syn.pending)){ syn.cancel(); setTimeout(go, 120); } else go();
   });
 }
 const stopSpeak = () => { try{ speechSynthesis.cancel(); }catch(e){} };
@@ -645,10 +652,10 @@ const Keeper = {
     const w = (o,str) => [...str].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
     w(0,'RIFF'); v.setUint32(4,36+n*2,true); w(8,'WAVE'); w(12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
     v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true); w(36,'data'); v.setUint32(40,n*2,true);
-    for(let i=0;i<n;i++) v.setInt16(44+i*2, Math.round((Math.random()*2-1)*40), true);
+    for(let i=0;i<n;i++) v.setInt16(44+i*2, Math.round(0), true);
     return URL.createObjectURL(new Blob([buf], {type:'audio/wav'}));
   },
-  start(){ if(!S.bg) return; try{ if(!this.el){ this.el = new Audio(this.wav()); this.el.loop = true; } this.el.play().catch(()=>{}); }catch(e){} },
+  start(){ if(!S.bgx) return; try{ if(!this.el){ this.el = new Audio(this.wav()); this.el.loop = true; } this.el.play().catch(()=>{}); }catch(e){} },
   stop(){ try{ this.el && this.el.pause(); }catch(e){} }
 };
 function mediaMeta(title, sub){
@@ -742,7 +749,7 @@ $('#startWordAuto').onclick = () => {
 
 /* ---------- 설정 ---------- */
 $('#setRate').value = String(S.rate); $('#setFuri').checked = S.furi; $('#setPron').checked = S.pron;
-$('#setAuto').checked = S.auto; $('#setRev').checked = S.rev; $('#setNew').value = String(S.newPer); $('#setTheme').value = S.theme; $('#setBg').checked = S.bg;
+$('#setAuto').checked = S.auto; $('#setRev').checked = S.rev; $('#setNew').value = String(S.newPer); $('#setTheme').value = S.theme; $('#setBg').checked = S.bgx;
 $('#setRate').onchange = e => { S.rate = +e.target.value; saveSet(); };
 $('#setVoice').onchange = e => { S.voice = e.target.value; saveSet(); };
 $('#setFuri').onchange = e => { S.furi = e.target.checked; saveSet(); applyView(); };
@@ -750,9 +757,24 @@ $('#setPron').onchange = e => { S.pron = e.target.checked; saveSet(); applyView(
 $('#setAuto').onchange = e => { S.auto = e.target.checked; saveSet(); };
 $('#setRev').onchange = e => { S.rev = e.target.checked; saveSet(); };
 $('#setNew').onchange = e => { S.newPer = +e.target.value; saveSet(); planText(); };
-$('#setBg').onchange = e => { S.bg = e.target.checked; saveSet(); if(!S.bg) Keeper.stop(); };
+$('#setBg').onchange = e => { S.bgx = e.target.checked; saveSet(); if(!S.bgx) Keeper.stop(); };
 $('#setTheme').onchange = e => { S.theme = e.target.value; saveSet(); applyView(); };
-$('#testVoice').onclick = () => speak('こんにちは。よろしくお願いします。');
+function diag(){
+  let t = '';
+  try{
+    const all = speechSynthesis.getVoices();
+    const ja = all.filter(v=>/^ja/i.test(v.lang)), ko = all.filter(v=>/^ko/i.test(v.lang));
+    t += `전체 음성 ${all.length}개 · 일본어 ${ja.length}개 · 한국어 ${ko.length}개\n`;
+    t += '일본어: ' + (ja.map(v=>v.name+(v.localService?'(기기)':'(온라인)')).join(', ') || '없음') + '\n';
+    t += '한국어: ' + (ko.map(v=>v.name+(v.localService?'(기기)':'(온라인)')).join(', ') || '없음') + '\n';
+  }catch(e){ t += '음성 기능 없음\n'; }
+  t += '마지막 재생 결과: ' + (LAST_TTS || '아직 없음') + '\n';
+  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v3_20261015_0856';
+  $('#diag').textContent = t;
+}
+$('#testVoice').onclick = async () => { Keeper.stop(); await speak('こんにちは。よろしくお願いします。'); diag(); };
+$('#testKo').onclick = async () => { Keeper.stop(); await speak('안녕하세요. 소리 테스트입니다.', {ko:true}); diag(); };
+document.querySelector('nav.bottom button[data-go=set]').addEventListener('click', () => setTimeout(diag, 300));
 $('#resetAll').onclick = () => { if(confirm('모든 학습 기록을 지울까요?')){ SRS = {}; LOG = {}; saveSrs(); store.set('log', LOG); store.set('shs', {}); START = Date.now(); store.set('start', START); renderHome(); planText(); } };
 
 applyView(); renderHome(); planText();
