@@ -307,7 +307,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <div class="card">
     <div class="setrow"><label>기록 초기화<small>모든 진도가 지워집니다</small></label><button class="btn bad" id="resetAll" style="min-height:40px">초기화</button></div>
   </div>
-  <p class="foot">버전 v3_20261015_0856 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
+  <p class="foot">버전 v3_20261015_0859 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
 </section>
 </main>
 
@@ -769,7 +769,7 @@ function diag(){
     t += '한국어: ' + (ko.map(v=>v.name+(v.localService?'(기기)':'(온라인)')).join(', ') || '없음') + '\n';
   }catch(e){ t += '음성 기능 없음\n'; }
   t += '마지막 재생 결과: ' + (LAST_TTS || '아직 없음') + '\n';
-  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v3_20261015_0856';
+  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v3_20261015_0859';
   $('#diag').textContent = t;
 }
 $('#testVoice').onclick = async () => { Keeper.stop(); await speak('こんにちは。よろしくお願いします。'); diag(); };
