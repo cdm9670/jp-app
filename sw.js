@@ -1,4 +1,4 @@
-const CACHE = 'jpk-v4_20261016_1230';
+const CACHE = 'jpk-v5_20261019_0833';
 const FILES = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)

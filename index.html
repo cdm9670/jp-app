@@ -112,7 +112,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
 .setrow:last-child{border-bottom:0}
 .setrow label{font-weight:600}
 .setrow small{display:block;color:var(--muted);font-weight:400;font-size:12px}
-.sw{position:relative;width:50px;height:30px;flex:none}
+.sw{position:relative;width:50px;height:30px;flex:none;display:inline-block;cursor:pointer}
 .sw input{opacity:0;width:0;height:0}
 .sw span{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.2s}
 .sw span:before{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
@@ -177,9 +177,9 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
         자동 재생 (듣기만)</button>
     </div>
     <div class="card" style="margin-top:12px;padding:6px 16px">
-      <div class="setrow"><label>예문도 함께 듣기<small>단어 → 뜻 → 예문 2번 → 예문 해석</small></label><span class="sw"><input type="checkbox" id="waEx"><span></span></span></div>
-      <div class="setrow"><label>순서 섞기</label><span class="sw"><input type="checkbox" id="waShuf"><span></span></span></div>
-      <div class="setrow"><label>끝나면 처음부터 반복</label><span class="sw"><input type="checkbox" id="waRep"><span></span></span></div>
+      <div class="setrow"><label>예문도 함께 듣기<small>단어 → 뜻 → 예문 2번 → 예문 해석</small></label><label class="sw"><input type="checkbox" id="waEx"><span></span></label></div>
+      <div class="setrow"><label>순서 섞기</label><label class="sw"><input type="checkbox" id="waShuf"><span></span></label></div>
+      <div class="setrow"><label>끝나면 처음부터 반복</label><label class="sw"><input type="checkbox" id="waRep"><span></span></label></div>
     </div>
     <p class="muted" id="cardPlan"></p>
   </div>
@@ -224,6 +224,10 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
       <button class="btn" id="startLoop" style="flex:1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>
         듣기만 연속 재생</button>
+    </div>
+    <div class="card" style="margin-top:12px;padding:6px 16px">
+      <div class="setrow"><label>순서 섞기 (연속 재생)</label><label class="sw"><input type="checkbox" id="shShuf"><span></span></label></div>
+      <div class="setrow"><label>끝나면 처음부터 반복 (연속 재생)</label><label class="sw"><input type="checkbox" id="shRep"><span></span></label></div>
     </div>
     <p class="muted">연속 재생은 한국어 뜻 → 일본어 → 따라 말할 시간 → 일본어 한 번 더, 순서로 자동 진행됩니다. 화면을 꺼도 계속 재생을 시도합니다.</p>
   </div>
@@ -288,11 +292,11 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
     <div class="setrow"><label>일본어 목소리</label><select id="setVoice"></select></div>
     <div class="setrow"><label>소리 테스트</label><span class="row" style="gap:6px"><button class="btn" id="testVoice" style="min-height:40px">일본어</button><button class="btn" id="testKo" style="min-height:40px">한국어</button></span></div>
     <div class="setrow" style="display:block"><label>음성 진단<small>소리가 안 나면 이 내용을 알려 주세요</small></label><pre id="diag" style="white-space:pre-wrap;font-size:12px;background:var(--surface2);border-radius:10px;padding:10px;margin:8px 0 0">-</pre></div>
-    <div class="setrow"><label>후리가나 표시<small>한자 위 작은 히라가나</small></label><span class="sw"><input type="checkbox" id="setFuri"><span></span></span></div>
-    <div class="setrow"><label>한국어 발음 표시<small>참고용 · 실제 소리와 다를 수 있음</small></label><span class="sw"><input type="checkbox" id="setPron"><span></span></span></div>
-    <div class="setrow"><label>카드 앞면에서 바로 소리<small>단어카드가 나올 때 자동 재생</small></label><span class="sw"><input type="checkbox" id="setAuto"><span></span></span></div>
-    <div class="setrow"><label>뜻 → 일본어 방향<small>켜면 한국어를 보고 일본어를 떠올려요</small></label><span class="sw"><input type="checkbox" id="setRev"><span></span></span></div>
-    <div class="setrow"><label>배경 재생 유지 (실험)<small>기본은 꺼짐 · 켜면 자동 재생 중 화면이 꺼져도 계속 재생을 시도 (소리가 안 나면 끄세요)</small></label><span class="sw"><input type="checkbox" id="setBg"><span></span></span></div>
+    <div class="setrow"><label>후리가나 표시<small>한자 위 작은 히라가나</small></label><label class="sw"><input type="checkbox" id="setFuri"><span></span></label></div>
+    <div class="setrow"><label>한국어 발음 표시<small>참고용 · 실제 소리와 다를 수 있음</small></label><label class="sw"><input type="checkbox" id="setPron"><span></span></label></div>
+    <div class="setrow"><label>카드 앞면에서 바로 소리<small>단어카드가 나올 때 자동 재생</small></label><label class="sw"><input type="checkbox" id="setAuto"><span></span></label></div>
+    <div class="setrow"><label>뜻 → 일본어 방향<small>켜면 한국어를 보고 일본어를 떠올려요</small></label><label class="sw"><input type="checkbox" id="setRev"><span></span></label></div>
+    <div class="setrow"><label>배경 재생 유지 (실험)<small>켜면 자동 재생 중 화면이 꺼져도 계속 재생을 시도 (휴대폰·Chrome에 따라 멈출 수 있음 · 소리가 안 나면 끄세요)</small></label><label class="sw"><input type="checkbox" id="setBg"><span></span></label></div>
     <div class="setrow"><label>하루 새 카드 수</label><select id="setNew"><option>5</option><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
     <div class="setrow"><label>화면 테마</label><select id="setTheme"><option value="">휴대폰 설정 따름</option><option value="light">밝게</option><option value="dark">어둡게</option></select></div>
   </div>
@@ -307,7 +311,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <div class="card">
     <div class="setrow"><label>기록 초기화<small>모든 진도가 지워집니다</small></label><button class="btn bad" id="resetAll" style="min-height:40px">초기화</button></div>
   </div>
-  <p class="foot">버전 v4_20261016_1230 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
+  <p class="foot">버전 v5_20261019_0833 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
 </section>
 </main>
 
@@ -432,7 +436,13 @@ const pronWord = (r, isVerb) => {
   return hangul([{t:r, rd:true}]);
 };
 /* 음성용: 한자를 후리가나(읽기)로 바꿔 잘못 읽는 것을 막음 */
-const ttsText = s => s.replace(RG, '$2');
+/* 여러 가지로 읽히는 한자만 후리가나로 바꿔 읽게 함 (나머지는 한자 그대로 → 억양이 자연스러움) */
+const AMBIG_CH = new Set([...'少熱楽話遅遠強長辛苦明細空降父香嫌変急足入出着何上下開生方間家角重日分後外金風子易良怒止冷直治閉時音']);
+const AMBIG_WORD = new Set(['一日','明日','下手','上手','何駅','人気','一人','二人','今日','大人','一','二']);
+const isAmbig = k => AMBIG_WORD.has(k) || (k.length===1 && AMBIG_CH.has(k));
+const ttsText = s => s.replace(RG, (m, k, r) => isAmbig(k) ? r : k);
+/* 단어 읽기: 헷갈리는 한자가 있으면 읽기(가나), 아니면 한자 그대로 */
+const ttsWord = c => [...c.w].some(ch => AMBIG_CH.has(ch)) || /[a-zA-Z]/.test(c.w) ? c.r : c.w;
 
 /* ---------- 음성 ---------- */
 let VOICES = [];
@@ -564,10 +574,10 @@ function showCard(){
   }
   $('#back').classList.add('hide'); $('#rateBtns').classList.add('hide'); $('#fc').classList.remove('flipped');
   applyView();
-  if(S.auto && !S.rev) speak(cur.r);
+  if(S.auto && !S.rev) speak(ttsWord(cur));
 }
 function flip(){
-  if(!cur || !$('#back').classList.contains('hide')) { if(cur) speak(cur.r); return; }
+  if(!cur || !$('#back').classList.contains('hide')) { if(cur) speak(ttsWord(cur)); return; }
   const fn = FORMN[cur.c];
   $('#back').innerHTML = `
     <div class="row"><p class="mean" style="flex:1">${esc(cur.kr)}</p>
@@ -578,10 +588,10 @@ function flip(){
       <button class="icon-btn" aria-label="예문 듣기" id="pe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div>
       <div class="pron">${esc(pronSent(cur.ex))}</div><div class="t">${esc(cur.tr)}</div></div>`;
   $('#back').classList.remove('hide'); $('#rateBtns').classList.remove('hide'); $('#fc').classList.add('flipped');
-  $('#pw').onclick = ev => { ev.stopPropagation(); speak(cur.r); };
+  $('#pw').onclick = ev => { ev.stopPropagation(); speak(ttsWord(cur)); };
   $('#pe').onclick = ev => { ev.stopPropagation(); speak(ttsText(cur.ex)); };
   applyView();
-  if(S.rev) speak(cur.r);
+  if(S.rev) speak(ttsWord(cur));
 }
 $('#front').onclick = flip;
 $('#startCards').onclick = () => startCards();
@@ -662,7 +672,7 @@ const Keeper = {
     const w = (o,str) => [...str].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
     w(0,'RIFF'); v.setUint32(4,36+n*2,true); w(8,'WAVE'); w(12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
     v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true); w(36,'data'); v.setUint32(40,n*2,true);
-    for(let i=0;i<n;i++) v.setInt16(44+i*2, Math.round(0), true);
+    for(let i=0;i<n;i++) v.setInt16(44+i*2, Math.round(Math.sin(2*Math.PI*20*i/sr)*250), true);
     return URL.createObjectURL(new Blob([buf], {type:'audio/wav'}));
   },
   start(){ if(!S.bgx) return; try{ if(!this.el){ this.el = new Audio(this.wav()); this.el.loop = true; } this.el.play().catch(()=>{}); }catch(e){} },
@@ -688,7 +698,7 @@ if('mediaSession' in navigator){
 function startAuto(list, from, mode, repeat){
   if(!list.length){ alert('재생할 항목이 없어요. 범위를 바꿔 보세요.'); return; }
   LL = list; li = 0; loopFrom = from; loopRepeat = !!repeat; autoOn = true;
-  $('#lpMode').textContent = mode; go('auto'); Keeper.start(); keepAwake(); resumeLoop();
+  $('#lpMode').textContent = mode + (S.waShuf ? ' · 섞기' : '') + (repeat ? ' · 반복' : ''); go('auto'); Keeper.start(); keepAwake(); resumeLoop();
 }
 function resumeLoop(){ looping = true; $('#lpPause').textContent = '일시정지'; $('#lpWave').classList.add('on'); Keeper.start(); runLoop(); }
 function pauseLoop(){ looping = false; loopToken++; stopSpeak(); $('#lpPause').textContent = '이어 듣기'; $('#lpWave').classList.remove('on'); $('#lpState').textContent = '일시정지됨';
@@ -702,7 +712,7 @@ async function runLoop(){
   const my = ++loopToken;
   while(looping && my===loopToken){
     if(li >= LL.length){
-      if(loopRepeat){ li = 0; } else { $('#lpState').textContent = '끝까지 들었어요. 수고하셨어요!'; looping = false; $('#lpWave').classList.remove('on'); Keeper.stop(); return; }
+      if(loopRepeat){ li = 0; if(S.waShuf) shuffle(LL); } else { $('#lpState').textContent = '끝까지 들었어요. 수고하셨어요!'; looping = false; $('#lpWave').classList.remove('on'); Keeper.stop(); return; }
     }
     const it = LL[li];
     $('#lpCount').textContent = `${li+1} / ${LL.length}`; $('#lpBar').style.width = (li/LL.length*100)+'%';
@@ -734,12 +744,16 @@ function sentItems(list){
              {label:'일본어 듣기', text: jp}, {label:'따라 말해 보세요', wait: 1500 + jp.length*230/S.rate},
              {label:'한 번 더', text: jp}, {wait:1200} ] }; });
 }
-$('#startLoop').onclick = () => startAuto(sentItems(shList()), 'shadow', '문장 연속 재생', false);
+$('#shShuf').checked = S.waShuf; $('#shRep').checked = S.waRep;
+$('#shShuf').onchange = e => { S.waShuf = e.target.checked; $('#waShuf').checked = S.waShuf; saveSet(); };
+$('#shRep').onchange = e => { S.waRep = e.target.checked; $('#waRep').checked = S.waRep; saveSet(); };
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; };
+$('#startLoop').onclick = () => { let L = shList(); if(S.waShuf) shuffle(L); startAuto(sentItems(L), 'shadow', '문장 연속 재생', S.waRep); };
 
 /* 단어 자동 재생 */
 function wordItems(cards){
   return cards.map(c => {
-    const steps = [ {label:'단어', text: c.r}, {wait:900}, {label:'한 번 더 (천천히)', text: c.r, rate: Math.max(0.5, S.rate-0.15)}, {wait:700},
+    const steps = [ {label:'단어', text: ttsWord(c)}, {wait:900}, {label:'한 번 더 (천천히)', text: ttsWord(c), rate: Math.max(0.5, S.rate-0.15)}, {wait:700},
                     {label:'뜻', text: c.kr.replace(/\//g, ', '), ko:true}, {wait:900} ];
     if(S.waEx) steps.push({label:'예문', text: ttsText(c.ex)}, {wait:900}, {label:'예문 한 번 더 (천천히)', text: ttsText(c.ex), rate: Math.max(0.5, S.rate-0.15)}, {wait:600}, {label:'예문 해석', text: c.tr, ko:true}, {wait:1200});
     else steps.push({wait:600});
@@ -749,8 +763,8 @@ function wordItems(cards){
 }
 $('#waEx').checked = S.waEx; $('#waShuf').checked = S.waShuf; $('#waRep').checked = S.waRep;
 $('#waEx').onchange = e => { S.waEx = e.target.checked; saveSet(); };
-$('#waShuf').onchange = e => { S.waShuf = e.target.checked; saveSet(); };
-$('#waRep').onchange = e => { S.waRep = e.target.checked; saveSet(); };
+$('#waShuf').onchange = e => { S.waShuf = e.target.checked; $('#shShuf').checked = S.waShuf; saveSet(); };
+$('#waRep').onchange = e => { S.waRep = e.target.checked; $('#shRep').checked = S.waRep; saveSet(); };
 $('#startWordAuto').onclick = () => {
   let p = pool().slice();
   if(S.waShuf){ for(let i=p.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [p[i],p[j]] = [p[j],p[i]]; } }
@@ -779,7 +793,7 @@ function diag(){
     t += '한국어: ' + (ko.map(v=>v.name+(v.localService?'(기기)':'(온라인)')).join(', ') || '없음') + '\n';
   }catch(e){ t += '음성 기능 없음\n'; }
   t += '마지막 재생 결과: ' + (LAST_TTS || '아직 없음') + '\n';
-  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v4_20261016_1230';
+  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v5_20261019_0833';
   $('#diag').textContent = t;
 }
 $('#testVoice').onclick = async () => { Keeper.stop(); await speak('こんにちは。よろしくお願いします。'); diag(); };
