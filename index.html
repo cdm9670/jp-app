@@ -44,7 +44,7 @@ header .pill{font-size:12px;color:var(--muted);background:var(--surface2);border
 main{max-width:980px;margin:0 auto;padding:16px}
 nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
   display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
-nav.bottom button{flex:1;max-width:220px;border:0;background:none;padding:10px 2px 12px;font-size:12px;white-space:nowrap;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px}
+nav.bottom button{flex:1;max-width:220px;border:0;background:none;padding:10px 4px 12px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px}
 nav.bottom button svg{width:24px;height:24px}
 nav.bottom button.on{color:var(--accent);font-weight:700}
 .view{display:none}.view.on{display:block}
@@ -120,9 +120,6 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
 .sw input:checked+span:before{transform:translateX(20px)}
 .warn{background:var(--bad-soft);color:var(--text);border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:12px}
 .warn b{color:var(--bad)}
-.trk{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;text-align:left;font-size:14px}
-.trk.on{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
-.trk small{display:block;color:var(--muted);font-size:11px}
 .foot{text-align:center;color:var(--muted);font-size:12px;margin:28px 0 8px}
 </style>
 </head>
@@ -144,10 +141,6 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   </div>
   <h2>학습 시작</h2>
   <div class="grid modes">
-    <button class="big-btn" data-go="tracks">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/></svg></span>
-      <div><b>듣기 트랙 (화면 꺼져도 재생)</b><span>운전 중·폴더를 닫아도 계속 들리는 녹음 음성 · 주차별 단어, 상황별 회화</span></div>
-    </button>
     <button class="big-btn" data-go="cards">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="16" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v14"/></svg></span>
       <div><b>단어카드</b><span>일본어를 보고 뜻 떠올리기 · 틀린 카드는 더 자주 나와요</span></div>
@@ -291,35 +284,6 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <p class="muted" style="margin-top:14px">재생 중에는 화면이 꺼지지 않게 해 둡니다. 화면을 꺼도 계속 듣고 싶으면 설정의 '배경 재생 유지(실험)'를 켜 보세요.</p>
 </section>
 
-<!-- TRACKS (녹음 음성, 화면 꺼져도 재생) -->
-<section class="view" id="v-tracks">
-  <div class="card" id="trkPlayer">
-    <span class="tag" id="trkKind">듣기 트랙</span>
-    <div class="sh-kr" id="trkTitle">트랙을 골라 주세요</div>
-    <div class="muted" id="trkSub" style="margin-top:4px"></div>
-    <input type="range" id="trkSeek" min="0" max="1000" value="0" style="width:100%;margin:14px 0 4px">
-    <div class="row muted" style="font-size:12px"><span id="trkCur">0:00</span><span class="spacer"></span><span id="trkDur">0:00</span></div>
-    <div class="actions" style="grid-template-columns:1fr"><button class="btn primary" id="trkPlay" style="min-height:56px;font-size:18px">재생</button></div>
-    <div class="actions" style="grid-template-columns:repeat(4,1fr);margin-top:8px">
-      <button class="btn" id="trkPrev" aria-label="이전 트랙">⏮ 이전</button>
-      <button class="btn" id="trkBack" aria-label="10초 뒤로">−10초</button>
-      <button class="btn" id="trkFwd" aria-label="10초 앞으로">+10초</button>
-      <button class="btn" id="trkNext" aria-label="다음 트랙">다음 ⏭</button>
-    </div>
-    <div class="setrow" style="margin-top:8px"><label>속도</label><select id="trkRate"><option value="0.8">0.8배</option><option value="0.9">0.9배</option><option value="1" selected>1.0배</option><option value="1.2">1.2배</option></select></div>
-    <div class="setrow"><label>순서 섞기</label><label class="sw"><input type="checkbox" id="trkShuf"><span></span></label></div>
-    <div class="setrow"><label>끝나면 처음부터 반복</label><label class="sw"><input type="checkbox" id="trkRep"><span></span></label></div>
-  </div>
-  <p class="muted" style="font-size:13px">미리 녹음한 음성이라 <b>화면을 끄거나 폴더를 닫아도 음악처럼 계속 재생</b>됩니다. 잠금화면·블루투스 버튼으로 일시정지·다음 트랙도 됩니다.
-  단어 트랙 순서: 일본어 단어 2번 → 한국어 뜻 → 예문 2번 → 해석. 회화 트랙: 한국어 → 일본어 → 따라 말할 시간 → 일본어.</p>
-  <div class="row" style="margin:6px 0 4px"><button class="btn" id="trkSave" style="flex:1">전체 트랙 휴대폰에 저장 (인터넷 없이 듣기)</button></div>
-  <p class="muted" id="trkSaveMsg" style="font-size:12px"></p>
-  <h2>상황별 회화</h2>
-  <div class="grid" id="trkConv"></div>
-  <h2>주차별 단어 (12개씩)</h2>
-  <div class="grid" id="trkWords" style="grid-template-columns:repeat(auto-fill,minmax(96px,1fr))"></div>
-</section>
-
 <!-- SETTINGS -->
 <section class="view" id="v-set">
   <div class="card">
@@ -347,7 +311,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <div class="card">
     <div class="setrow"><label>기록 초기화<small>모든 진도가 지워집니다</small></label><button class="btn bad" id="resetAll" style="min-height:40px">초기화</button></div>
   </div>
-  <p class="foot">버전 v7_20261019_1005 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
+  <p class="foot">버전 v5_20261019_0833 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
 </section>
 </main>
 
@@ -355,7 +319,6 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <button data-go="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>홈</button>
   <button data-go="cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="16" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v14"/></svg>단어카드</button>
   <button data-go="shadow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg>따라 말하기</button>
-  <button data-go="tracks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/></svg>듣기</button>
   <button data-go="set"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>설정</button>
 </nav>
 
@@ -519,7 +482,6 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 /* ---------- 화면 전환 ---------- */
 function go(v){
   if(v!=='auto'){ stopSpeak(); if(looping || autoOn) stopLoop(true); }
-  if(v==='tracks') renderTracks();
   $$('.view').forEach(x => x.classList.toggle('on', x.id==='v-'+v));
   $$('nav.bottom button').forEach(b => b.classList.toggle('on', b.dataset.go===v));
   if(v==='home') renderHome();
@@ -726,18 +688,15 @@ function mediaMeta(title, sub){
 }
 if('mediaSession' in navigator){
   try{
-    navigator.mediaSession.setActionHandler('play', () => { if(tCur >= 0 && !autoOn) player.play(); else if(autoOn && !looping) resumeLoop(); });
-    navigator.mediaSession.setActionHandler('pause', () => { if(tCur >= 0 && !autoOn) player.pause(); else if(looping) pauseLoop(); });
-    navigator.mediaSession.setActionHandler('nexttrack', () => { if(tCur >= 0 && !autoOn) nextTrack(1); else jumpLoop(1); });
-    navigator.mediaSession.setActionHandler('previoustrack', () => { if(tCur >= 0 && !autoOn) nextTrack(-1); else jumpLoop(-1); });
-    navigator.mediaSession.setActionHandler('seekbackward', () => { if(tCur >= 0) player.currentTime = Math.max(0, player.currentTime - 10); });
-    navigator.mediaSession.setActionHandler('seekforward', () => { if(tCur >= 0) player.currentTime = player.currentTime + 10; });
+    navigator.mediaSession.setActionHandler('play', () => { if(autoOn && !looping) resumeLoop(); });
+    navigator.mediaSession.setActionHandler('pause', () => { if(looping) pauseLoop(); });
+    navigator.mediaSession.setActionHandler('nexttrack', () => jumpLoop(1));
+    navigator.mediaSession.setActionHandler('previoustrack', () => jumpLoop(-1));
     navigator.mediaSession.setActionHandler('stop', () => stopLoop());
   }catch(e){}
 }
 function startAuto(list, from, mode, repeat){
   if(!list.length){ alert('재생할 항목이 없어요. 범위를 바꿔 보세요.'); return; }
-  try{ player.pause(); }catch(e){}
   LL = list; li = 0; loopFrom = from; loopRepeat = !!repeat; autoOn = true;
   $('#lpMode').textContent = mode + (S.waShuf ? ' · 섞기' : '') + (repeat ? ' · 반복' : ''); go('auto'); Keeper.start(); keepAwake(); resumeLoop();
 }
@@ -812,88 +771,6 @@ $('#startWordAuto').onclick = () => {
   startAuto(wordItems(p), 'cards', '단어 자동 재생', S.waRep);
 };
 
-/* ---------- 듣기 트랙 (녹음 음성) ---------- */
-const AUDIO_OK = ["c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "w01", "w02", "w03", "w04", "w05", "w06", "w07", "w08", "w09", "w10", "w11"];
-const SITS = [...new Set(DATA.conv.map(c => c.s))];
-const TRACKS = [
-  ...SITS.map((s, i) => ({id:'c'+String(i+1).padStart(2,'0'), kind:'회화', title:'회화 · '+s, sub: DATA.conv.filter(c=>c.s===s).length+'문장'})),
-  ...Array.from({length:50}, (_, i) => ({id:'w'+String(i+1).padStart(2,'0'), kind:'단어', title:(i+1)+'주차 단어', sub: DATA.cards.filter(c=>c.wk===i+1).map(c=>c.kr.split('/')[0]).slice(0,3).join(', ')+' …'}))
-].filter(t => AUDIO_OK.includes(t.id));
-const TRACKS_SOON = 50 + SITS.length - TRACKS.length;
-const player = new Audio(); player.preload = 'auto';
-let tOrder = TRACKS.map((_, i) => i), tPos = 0, tCur = -1, tUrl = null, tLoading = false;
-Object.assign(S, Object.assign({trkShuf:false, trkRep:true, trkRate:1, trkLast:'w01'}, S));
-const fmtT = x => isFinite(x) ? Math.floor(x/60)+':'+String(Math.floor(x%60)).padStart(2,'0') : '0:00';
-function buildOrder(startIdx){
-  tOrder = TRACKS.map((_, i) => i);
-  if(S.trkShuf){ shuffle(tOrder); const k = tOrder.indexOf(startIdx); [tOrder[0], tOrder[k]] = [tOrder[k], tOrder[0]]; tPos = 0; }
-  else tPos = startIdx;
-}
-async function loadTrack(idx, autoplay){
-  if(tLoading) return; tLoading = true;
-  const t = TRACKS[idx]; tCur = idx; S.trkLast = t.id; saveSet();
-  $('#trkKind').textContent = t.kind + ' 트랙'; $('#trkTitle').textContent = t.title; $('#trkSub').textContent = '불러오는 중…';
-  renderTracks();
-  try{
-    const r = await fetch('audio/' + t.id + '.ogg');
-    if(!r.ok) throw new Error(r.status);
-    const blob = await r.blob();
-    if(tUrl) URL.revokeObjectURL(tUrl);
-    tUrl = URL.createObjectURL(blob); player.src = tUrl; player.playbackRate = S.trkRate;
-    $('#trkSub').textContent = t.sub;
-    if('mediaSession' in navigator){
-      navigator.mediaSession.metadata = new MediaMetadata({title: t.title, artist:'일본어 회화 기초', album: t.kind,
-        artwork:[{src:'icon-192.png', sizes:'192x192', type:'image/png'},{src:'icon-512.png', sizes:'512x512', type:'image/png'}]});
-    }
-    if(autoplay) await player.play();
-  }catch(e){ $('#trkSub').textContent = '불러오지 못했어요. 인터넷 연결을 확인하거나, 저장해 둔 트랙인지 확인해 주세요.'; }
-  tLoading = false; updBtn();
-}
-function playIdx(idx){ stopSpeak(); if(looping || autoOn) stopLoop(true); buildOrder(idx); loadTrack(idx, true); }
-function nextTrack(d){
-  let p = tPos + d;
-  if(p >= tOrder.length){ if(!S.trkRep){ player.pause(); updBtn(); return; } if(S.trkShuf) shuffle(tOrder); p = 0; }
-  if(p < 0) p = S.trkRep ? tOrder.length-1 : 0;
-  tPos = p; loadTrack(tOrder[tPos], true);
-}
-function updBtn(){ $('#trkPlay').textContent = player.paused ? '재생' : '일시정지';
-  try{ navigator.mediaSession.playbackState = player.paused ? 'paused' : 'playing'; }catch(e){} }
-player.addEventListener('ended', () => nextTrack(1));
-player.addEventListener('play', updBtn); player.addEventListener('pause', updBtn);
-player.addEventListener('timeupdate', () => {
-  $('#trkCur').textContent = fmtT(player.currentTime); $('#trkDur').textContent = fmtT(player.duration);
-  if(player.duration) $('#trkSeek').value = Math.round(player.currentTime / player.duration * 1000);
-  try{ if(player.duration) navigator.mediaSession.setPositionState({duration: player.duration, playbackRate: player.playbackRate, position: Math.min(player.currentTime, player.duration)}); }catch(e){}
-});
-$('#trkSeek').oninput = e => { if(player.duration) player.currentTime = e.target.value / 1000 * player.duration; };
-$('#trkPlay').onclick = () => {
-  if(tCur < 0){ const i = Math.max(0, TRACKS.findIndex(t => t.id === S.trkLast)); playIdx(i); return; }
-  if(player.paused){ stopSpeak(); if(looping || autoOn) stopLoop(true); player.play(); } else player.pause();
-};
-$('#trkPrev').onclick = () => { if(player.currentTime > 5) player.currentTime = 0; else nextTrack(-1); };
-$('#trkNext').onclick = () => nextTrack(1);
-$('#trkBack').onclick = () => { player.currentTime = Math.max(0, player.currentTime - 10); };
-$('#trkFwd').onclick = () => { player.currentTime = Math.min(player.duration || 0, player.currentTime + 10); };
-$('#trkRate').value = String(S.trkRate); $('#trkRate').onchange = e => { S.trkRate = +e.target.value; player.playbackRate = S.trkRate; saveSet(); };
-$('#trkShuf').checked = S.trkShuf; $('#trkShuf').onchange = e => { S.trkShuf = e.target.checked; saveSet(); if(tCur >= 0) buildOrder(tCur); };
-$('#trkRep').checked = S.trkRep; $('#trkRep').onchange = e => { S.trkRep = e.target.checked; saveSet(); };
-function renderTracks(){
-  const item = (t, i) => `<button class="trk${i===tCur?' on':''}" data-trk="${i}">${esc(t.title.replace('회화 · ',''))}<small>${esc(t.sub)}</small></button>`;
-  $('#trkConv').innerHTML = TRACKS.map((t, i) => t.kind==='회화' ? item(t, i) : '').join('');
-  $('#trkWords').innerHTML = TRACKS.map((t, i) => t.kind==='단어' ? `<button class="trk${i===tCur?' on':''}" data-trk="${i}">${esc(t.title.replace(' 단어',''))}</button>` : '').join('')
-    + (TRACKS_SOON > 0 ? `<p class="muted" style="grid-column:1/-1;font-size:12px">나머지 ${TRACKS_SOON}개 트랙은 준비 중이에요.</p>` : '');
-}
-document.addEventListener('click', e => { const b = e.target.closest('[data-trk]'); if(b) playIdx(+b.dataset.trk); });
-$('#trkSave').onclick = async () => {
-  const btn = $('#trkSave'); btn.disabled = true; let ok = 0;
-  for(let i = 0; i < TRACKS.length; i++){
-    $('#trkSaveMsg').textContent = `저장 중… ${i+1} / ${TRACKS.length}`;
-    try{ const r = await fetch('audio/' + TRACKS[i].id + '.ogg'); if(r.ok){ await r.blob(); ok++; } }catch(e){}
-  }
-  $('#trkSaveMsg').textContent = ok === TRACKS.length ? `전체 ${ok}개 트랙을 저장했어요. 이제 인터넷 없이도 들을 수 있어요.` : `${ok}/${TRACKS.length}개 저장됨. 인터넷 연결 후 다시 눌러 주세요.`;
-  btn.disabled = false;
-};
-
 /* ---------- 설정 ---------- */
 $('#setRate').value = String(S.rate); $('#setFuri').checked = S.furi; $('#setPron').checked = S.pron;
 $('#setAuto').checked = S.auto; $('#setRev').checked = S.rev; $('#setNew').value = String(S.newPer); $('#setTheme').value = S.theme; $('#setBg').checked = S.bgx;
@@ -916,7 +793,7 @@ function diag(){
     t += '한국어: ' + (ko.map(v=>v.name+(v.localService?'(기기)':'(온라인)')).join(', ') || '없음') + '\n';
   }catch(e){ t += '음성 기능 없음\n'; }
   t += '마지막 재생 결과: ' + (LAST_TTS || '아직 없음') + '\n';
-  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v7_20261019_1005';
+  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v5_20261019_0833';
   $('#diag').textContent = t;
 }
 $('#testVoice').onclick = async () => { Keeper.stop(); await speak('こんにちは。よろしくお願いします。'); diag(); };
