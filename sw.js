@@ -1,5 +1,5 @@
-const CACHE = 'jpk-v6_20261019_0929';
-const AUDIO = 'jpk-audio-v1'; // 녹음 트랙은 앱 업데이트 후에도 유지
+const CACHE = 'jpk-v7_20261019_1005';
+const AUDIO = 'jpk-audio-v2'; // 녹음 트랙은 앱 업데이트 후에도 유지
 const FILES = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)

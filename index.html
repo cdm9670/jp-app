@@ -347,7 +347,7 @@ select{font:inherit;color:var(--text);background:var(--surface);border:1px solid
   <div class="card">
     <div class="setrow"><label>기록 초기화<small>모든 진도가 지워집니다</small></label><button class="btn bad" id="resetAll" style="min-height:40px">초기화</button></div>
   </div>
-  <p class="foot">버전 v6_20261019_0929 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
+  <p class="foot">버전 v7_20261019_1005 · 인터넷 없이 동작 · 기록은 이 휴대폰에만 저장</p>
 </section>
 </main>
 
@@ -813,7 +813,7 @@ $('#startWordAuto').onclick = () => {
 };
 
 /* ---------- 듣기 트랙 (녹음 음성) ---------- */
-const AUDIO_OK = ["c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "w01", "w02", "w03", "w04", "w05", "w06", "w07"];
+const AUDIO_OK = ["c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "w01", "w02", "w03", "w04", "w05", "w06", "w07", "w08", "w09", "w10", "w11"];
 const SITS = [...new Set(DATA.conv.map(c => c.s))];
 const TRACKS = [
   ...SITS.map((s, i) => ({id:'c'+String(i+1).padStart(2,'0'), kind:'회화', title:'회화 · '+s, sub: DATA.conv.filter(c=>c.s===s).length+'문장'})),
@@ -916,7 +916,7 @@ function diag(){
     t += '한국어: ' + (ko.map(v=>v.name+(v.localService?'(기기)':'(온라인)')).join(', ') || '없음') + '\n';
   }catch(e){ t += '음성 기능 없음\n'; }
   t += '마지막 재생 결과: ' + (LAST_TTS || '아직 없음') + '\n';
-  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v6_20261019_0929';
+  t += '배경 재생 유지: ' + (S.bgx ? '켜짐' : '꺼짐') + ' · 버전 v7_20261019_1005';
   $('#diag').textContent = t;
 }
 $('#testVoice').onclick = async () => { Keeper.stop(); await speak('こんにちは。よろしくお願いします。'); diag(); };
