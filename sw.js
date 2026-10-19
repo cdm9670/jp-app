@@ -1,4 +1,5 @@
-const CACHE = 'jpk-v5_20261019_0833';
+const CACHE = 'jpk-v6_20261019_0929';
+const AUDIO = 'jpk-audio-v1'; // 녹음 트랙은 앱 업데이트 후에도 유지
 const FILES = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)
@@ -6,7 +7,7 @@ self.addEventListener('install', e => {
     .then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== AUDIO).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
@@ -21,7 +22,10 @@ self.addEventListener('fetch', e => {
     e.respondWith(Promise.race([net, slow]).catch(() => caches.match('./index.html').then(r => r || net)));
     return;
   }
+  const isAudio = /\/audio\//.test(new URL(e.request.url).pathname);
+  if (isAudio && e.request.headers.has('range')) return; // 범위 요청은 브라우저에 맡김
   e.respondWith(caches.match(e.request, {ignoreSearch: true}).then(r => r || fetch(e.request).then(res => {
-    const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return res;
-  }).catch(() => caches.match('./index.html'))));
+    if (res.ok && res.status === 200) { const copy = res.clone(); caches.open(isAudio ? AUDIO : CACHE).then(c => c.put(e.request, copy)); }
+    return res;
+  }).catch(() => isAudio ? Response.error() : caches.match('./index.html'))));
 });
